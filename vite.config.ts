@@ -32,7 +32,7 @@ module.exports = defineConfig({
     },
     minify: false,
   },
-  plugins: [wasm({ targetEnv: "auto" })],
+  plugins: [wasm({ targetEnv: "auto-inline" })],
   test: {
     globals: true,
     environment: "happy-dom",
