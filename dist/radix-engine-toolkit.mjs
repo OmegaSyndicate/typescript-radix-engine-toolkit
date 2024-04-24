@@ -16760,31 +16760,14 @@ function _loadWasmModule(sync, filepath, src, imports) {
     }
   }
   var buf = null;
-  var isNode = typeof process !== "undefined" && process.versions != null && process.versions.node != null;
-  if (filepath && isNode) {
-    var fs = require("fs");
-    var path = require("path");
-    return new Promise((resolve, reject) => {
-      fs.readFile(path.resolve(__dirname, filepath), (error, buffer) => {
-        if (error != null) {
-          reject(error);
-        } else {
-          resolve(_instantiateOrCompile(buffer, imports, false));
-        }
-      });
-    });
-  } else if (filepath) {
+  if (filepath) {
     return _instantiateOrCompile(fetch(filepath), imports, true);
   }
-  if (isNode) {
-    buf = Buffer.from(src, "base64");
-  } else {
-    var raw = globalThis.atob(src);
-    var rawLength = raw.length;
-    buf = new Uint8Array(new ArrayBuffer(rawLength));
-    for (var i = 0; i < rawLength; i++) {
-      buf[i] = raw.charCodeAt(i);
-    }
+  var raw = globalThis.atob(src);
+  var rawLength = raw.length;
+  buf = new Uint8Array(new ArrayBuffer(rawLength));
+  for (var i = 0; i < rawLength; i++) {
+    buf[i] = raw.charCodeAt(i);
   }
   if (sync) {
     var mod2 = new WebAssembly.Module(buf);
