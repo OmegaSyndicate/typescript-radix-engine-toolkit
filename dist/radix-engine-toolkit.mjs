@@ -1,3 +1,5 @@
+import wasMod from "./87f112ed4a41cc6c.wasm"
+
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key2, value) => key2 in obj ? __defProp(obj, key2, { enumerable: true, configurable: true, writable: true, value }) : obj[key2] = value;
 var __publicField = (obj, key2, value) => {
@@ -16761,7 +16763,8 @@ function _loadWasmModule(sync, filepath, src, imports) {
   }
   var buf = null;
   if (filepath) {
-    return _instantiateOrCompile(fetch(filepath), imports, true);
+    // return _instantiateOrCompile(fetch(filepath), imports, true);
+    return WebAssembly.instantiate(wasMod, imports);
   }
   var raw = globalThis.atob(src);
   var rawLength = raw.length;
@@ -16987,7 +16990,8 @@ class RawRadixEngineToolkit extends Host {
 const rawRadixEngineToolkit = wasmModule(
   wasmBindgenImports
 ).then((instance) => {
-  const exports = instance.instance.exports;
+  console.log(instance)
+  const exports = instance.exports;
   return new RawRadixEngineToolkit(exports);
 });
 Decimal.config({ precision: 64 });
